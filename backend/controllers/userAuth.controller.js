@@ -84,7 +84,52 @@ const login= async(req, res) =>{
           }
 }
 
+const logout = (req, res) =>{
+          try {
+                  res.cookie('token', '', {maxAge: 0});
+                  return res.status(200).json({
+                    message: "logout successfully",
+                    status: true
+                  }) 
+          } catch (error) {
+                console.log(error);
+                return res.status(500).json({
+                    message: error.message,
+                    status: false
+                })    
+          }
+}
+
+const getMe = async(req, res) =>{
+          try {
+                    const userId = req.user._id;
+                    const user = await User.findById(userId).select('-password');
+
+                    if(!user){
+                      return res.status(400).json({
+                        message: "User not found",
+                        success: false
+                      })
+                    }
+
+                    return res.status(200).json({
+                      message: "User found",
+                      data: user,
+                      success: true
+                    })
+
+          } catch (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                              message: error.message,
+                              success: false
+                    })
+          }
+}
+
 module.exports = {
           signup,
-          login
+          login,
+          logout,
+          getMe
 }
