@@ -7,12 +7,12 @@ const createNote = async(req, res) =>{
 
                     console.log(userId);
 
-                    // if(!title, !content, !tags){
-                    //           return res.status(400).json({
-                    //                     message: "All fields are required",
-                    //                     success: false
-                    //           })
-                    // }
+                    if(!title, !content, !tags){
+                              return res.status(400).json({
+                                        message: "All fields are required",
+                                        success: false
+                              })
+                    }
 
                     const newNote = new Note({
                               title,
@@ -41,7 +41,7 @@ const createNote = async(req, res) =>{
 const getNotes = async(req, res) =>{
           try {     
                     const userId = req.user._id;
-                    const notes = await Note.findOne({userId});
+                    const notes = await Note.find({userId});
                     return res.status(200).json({
                               message: "All notes",
                               data: notes,
@@ -79,7 +79,7 @@ const editNote = async(req, res) =>{
 
                     note.title = title || note.title;
                     note.content = content || note.content;
-                    note.tags = [...note.tags, tags] || note.tags;
+                    note.tags = tags || note.tags;
 
                    const updatedNote= await note.save();
 
@@ -99,9 +99,61 @@ const editNote = async(req, res) =>{
           }
 }
 
+const deleteNote = async(req, res) =>{
+          try {
+                    const noteId = req.params.id;
+                    const note = await Note.findById(noteId);
+                    
+                    const userId = req.user._id;
+                    if(note.userId.toString() !== userId.toString()){
+                              return res.status(404).json({
+                                        message: "You are not allowed to delete this note",
+                                        success: false
+                              })
+                    }
+
+                    await note.deleteOne({_id: noteId});
+
+                    return res.status(200).json({
+                              message: "Note deleted successfully",
+                              success: true,
+                    })
+                    
+
+          } catch (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                              message: error.message,
+                              success: false
+                    })
+          }
+}
+
+const deleteAllNotes = async (req, res) =>{
+          try {
+                 const userId = req.user._id;
+                 
+                 await Note.deleteMany({userId});
+
+                 return res.status(200).json({
+                    message: "All Notes deleted successfully",
+                    success: true
+                 })
+                 
+          } catch (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                              message: error.message,
+                              success: false
+                    })
+          }
+}
+
 
 module.exports = {
           createNote,
           getNotes,
-          editNote
+          editNote,
+          deleteNote,
+          deleteAllNotes
 }
