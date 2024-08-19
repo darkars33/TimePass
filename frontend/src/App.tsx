@@ -1,14 +1,22 @@
-import { useState } from 'react'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+import Notes from "./pages/notes/Notes";
+import Signup from "./pages/signup/Signup";
+import Login from "./pages/login/Login";
+import Navbar from "./components/Navbar";
+import { Toaster } from "react-hot-toast";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <h1 className='underline text-xl text-black'>hello guys</h1>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Notes />} />
+        <Route path="/signUp" element={<Signup />} />
+        <Route path="/logIn" element={<Login />} />
+      </Routes>
+      <Toaster />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
