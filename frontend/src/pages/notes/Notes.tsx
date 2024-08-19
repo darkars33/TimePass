@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import NoteCard from "../../components/NoteCard";
 
+
+
 const Notes = () => {
 
           const token = localStorage.getItem("token");
@@ -36,6 +38,23 @@ const Notes = () => {
             }
           }
 
+          const handleDelete = async (id: string) =>{
+            const URL = `${import.meta.env.VITE_BACKEND_URL}/api/note/deleteNote/${id}`;
+            try {
+                const res = await axios.delete(URL,{
+                  withCredentials: true
+                });
+                console.log(res);
+                if(res.data.success){
+                  fetchNotes();
+                  toast.success("Note deleted successfully");
+                }
+            } catch (error) {
+              console.log(error);
+              toast.error("Failed to delete note");
+            }
+          }
+
           useEffect(() =>{
             fetchNotes();
           },[showAddNote])
@@ -47,7 +66,7 @@ const Notes = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-20">
         {notes.map((note) => (
-          <NoteCard note={note} key={note._id}/>
+          <NoteCard note={note} key={note._id} handleDelete={handleDelete} />
         ))}
         </div>
 
