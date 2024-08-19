@@ -22,11 +22,13 @@ const signup= async(req, res) =>{
 
                     if(newUser){
                               generateToken(newUser._id, res);
+                              const token = req.cookies.token;
                               await newUser.save();
                               return res.status(200).json({
                                         message: "User created successfully",
                                         data: newUser,
-                                        success: true
+                                        success: true,
+                                        token: token
                               })
                     }else{
                               return res.status(400).json({
@@ -70,9 +72,13 @@ const login= async(req, res) =>{
 
                     generateToken(user._id, res);
 
+                    const token = req.cookies.token;
+
                     return res.status(200).json({
                               message: "User logged in successfully",
-                              success: true
+                              success: true,
+                              token: token,
+                              data: user
                     })
 
           } catch (error) {

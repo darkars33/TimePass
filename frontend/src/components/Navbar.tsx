@@ -4,6 +4,7 @@ import LogOut from "./LogOut";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+
 const Navbar = () => {
           const navigate = useNavigate();
           const token = localStorage.getItem("token");
@@ -18,7 +19,7 @@ const Navbar = () => {
     <nav className="w-screen fixed top-0 p-5 px-10 shadow-lg flex items-center justify-between z-10">
       <h1 className="text-xl font-semibold">Notes</h1>
       {token && <><Filter />
-      <LogOut /></>}
+      <LogOut user={user} /></>}
     </nav>
   );
 };
