@@ -1,9 +1,19 @@
 import AddNote from "../../components/AddNote";
 import { FaPlus } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Notes = () => {
+
+          const token = localStorage.getItem("token");
+          const navigate = useNavigate();
+          useEffect(() =>{
+                    if(!token){
+                              navigate("/logIn");
+                    }
+          })
+
   const [showAddNote, setShowAddNote] = useState<boolean>(false);
   return (
     <div className="w-screen p-5 py-10 z-0">
