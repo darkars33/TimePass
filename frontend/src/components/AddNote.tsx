@@ -14,9 +14,10 @@ interface data {
 interface AddNoteProps {
   user: any;
   setShowAddNote?: any;
+  setShowEditNote?: any;
 }
 
-const AddNote: React.FC<AddNoteProps> = ({ user, setShowAddNote }) => {
+const AddNote: React.FC<AddNoteProps> = ({ user, setShowAddNote, setShowEditNote }) => {
   const [tag, setTag] = useState<string>("");
 
   const [data, setData] = useState<data>({

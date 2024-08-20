@@ -23,6 +23,7 @@ const Notes = () => {
           })
 
           const [showAddNote, setShowAddNote] = useState<boolean>(false);
+          const [showEditNote, setShowEditNote] = useState<boolean>(false);
           const fetchNotes = async () =>{
             const URL = `${import.meta.env.VITE_BACKEND_URL}/api/note/getNotes`;
 
@@ -66,7 +67,7 @@ const Notes = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-20">
         {notes.map((note) => (
-          <NoteCard note={note} key={note._id} handleDelete={handleDelete} />
+          <NoteCard note={note} key={note._id} handleDelete={handleDelete} setShowEditNote={setShowEditNote} />
         ))}
         </div>
 
@@ -75,14 +76,16 @@ const Notes = () => {
           <FaPlus className="text-3xl text-white" />
         </button>
       </div>
-      {showAddNote && (
+      {(showAddNote || showEditNote) && (
         <>
           <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40"></div>
           <div className="absolute top-[10%] left-[35%] z-50 bg-white p-5 rounded ">
-            <button className="absolute top-0 right-0 p-2 text-2xl" onClick={() =>setShowAddNote(false)}>
+            <button className="absolute top-0 right-0 p-2 text-2xl" onClick={() =>{setShowAddNote(false)
+            setShowEditNote(false)
+            }}>
               <IoClose className="text-gray-400" />
             </button>
-            <AddNote user={user} setShowAddNote={setShowAddNote} />
+            <AddNote user={user} setShowAddNote={setShowAddNote}   />
           </div>
         </>
       )}

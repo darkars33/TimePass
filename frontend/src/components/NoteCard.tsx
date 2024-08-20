@@ -5,11 +5,11 @@ import { MdOutlineModeEdit } from "react-icons/md";
 interface NoteCardProps {
   note: any;
   handleDelete: (id: string) => void;
+  setShowEditNote: (showEditNote: boolean) => void;
 }
 
-const NoteCard: React.FC<NoteCardProps> = ({ note, handleDelete }: NoteCardProps) => {
-
-  
+const NoteCard: React.FC<NoteCardProps> = ({ note, handleDelete, setShowEditNote }: NoteCardProps) => {
+ 
   return (
     <div key={note._id} className="bg-white p-5 rounded-xl shadow-lg">
       <h1 className="text-xl font-semibold">{note.title}</h1>
@@ -25,7 +25,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, handleDelete }: NoteCardProps
         <button className="text-red-500 text-xl" onClick={() => handleDelete(note._id)}>
           <MdOutlineDelete />
         </button>
-        <button className="text-green-500 text-xl">
+        <button className="text-green-500 text-xl" onClick={() => setShowEditNote(true)} >
           <MdOutlineModeEdit />
         </button>
       </div>
